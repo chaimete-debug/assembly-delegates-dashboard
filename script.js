@@ -14,8 +14,6 @@ async function loadDashboard() {
 
     const data = json.data || [];
 
-    console.log("DATA:", data); // debug
-
     renderKPIs(data);
     renderChurchSummary(data);
     renderRecentRecords(data);
@@ -30,39 +28,25 @@ async function loadDashboard() {
 function renderKPIs(data) {
   const total = data.length;
 
-  const present = data.filter(r =>
-    normalize(r["Situação Final"]) === "presente"
-  ).length;
+  const present = data.filter(r => normalize(r["Situação Final"]) === "presente").length;
+  const absent = data.filter(r => normalize(r["Situação Final"]) === "ausente").length;
 
-  const absent = data.filter(r =>
-    normalize(r["Situação Final"]) === "ausente"
-  ).length;
+  const delegates = data.filter(r => normalize(r["Categoria Final"]) === "delegado").length;
 
-  const delegates = data.filter(r => {
-    const cat = normalize(r["Categoria Final"]);
-    return cat === "delegado";
-  }).length;
+  const suplentes = data.filter(r => normalize(r["Categoria Final"]).includes("suplente")).length;
 
-  const suplentes = data.filter(r => {
-    const cat = normalize(r["Categoria Final"]);
-    return cat.includes("suplente");
-  }).length;
+  const substitutions = data.filter(r => clean(r["Substitui (Nome)"]) !== "").length;
 
-  const substitutions = data.filter(r =>
-    clean(r["Substitui (Nome)"]) !== ""
-  ).length;
-
-  setText("totalCount", total);
-  setText("presentCount", present);
-  setText("absentCount", absent);
-  setText("delegateCount", delegates);
-  setText("suplenteCount", suplentes);
-  setText("substitutionCount", substitutions);
+  document.getElementById("totalCount").textContent = total;
+  document.getElementById("presentCount").textContent = present;
+  document.getElementById("absentCount").textContent = absent;
+  document.getElementById("delegateCount").textContent = delegates;
+  document.getElementById("suplenteCount").textContent = suplentes;
+  document.getElementById("substitutionCount").textContent = substitutions;
 }
 
 function renderChurchSummary(data) {
   const map = countBy(data, "Igreja Final");
-
   const tbody = document.getElementById("churchSummaryBody");
   tbody.innerHTML = "";
 
@@ -70,10 +54,7 @@ function renderChurchSummary(data) {
     .sort((a, b) => b[1] - a[1])
     .forEach(([church, count]) => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${escapeHtml(church)}</td>
-        <td>${count}</td>
-      `;
+      tr.innerHTML = `<td>${escapeHtml(church)}</td><td>${count}</td>`;
       tbody.appendChild(tr);
     });
 }
@@ -84,7 +65,6 @@ function renderRecentRecords(data) {
 
   data.slice(-10).reverse().forEach(row => {
     const tr = document.createElement("tr");
-
     tr.innerHTML = `
       <td>${escapeHtml(clean(row["Nome Final"]))}</td>
       <td>${escapeHtml(clean(row["Igreja Final"]))}</td>
@@ -92,7 +72,6 @@ function renderRecentRecords(data) {
       <td>${escapeHtml(clean(row["Situação Final"]))}</td>
       <td>${escapeHtml(clean(row["Substitui (Nome)"]) || "-")}</td>
     `;
-
     tbody.appendChild(tr);
   });
 }
@@ -101,22 +80,18 @@ function renderSubstitutions(data) {
   const tbody = document.getElementById("substitutionsBody");
   tbody.innerHTML = "";
 
-  const substitutions = data.filter(r =>
-    clean(r["Substitui (Nome)"]) !== ""
-  );
-
-  substitutions.forEach(row => {
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${escapeHtml(clean(row["Nome Final"]))}</td>
-      <td>${escapeHtml(clean(row["Igreja Final"]))}</td>
-      <td>${escapeHtml(clean(row["Categoria Final"]))}</td>
-      <td>${escapeHtml(clean(row["Substitui (Nome)"]))}</td>
-    `;
-
-    tbody.appendChild(tr);
-  });
+  data
+    .filter(r => clean(r["Substitui (Nome)"]) !== "")
+    .forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${escapeHtml(clean(row["Nome Final"]))}</td>
+        <td>${escapeHtml(clean(row["Igreja Final"]))}</td>
+        <td>${escapeHtml(clean(row["Categoria Final"]))}</td>
+        <td>${escapeHtml(clean(row["Substitui (Nome)"]))}</td>
+      `;
+      tbody.appendChild(tr);
+    });
 }
 
 function renderCharts(data) {
@@ -136,6 +111,10 @@ function renderCharts(data) {
         label: "Total",
         data: Object.values(churchMap)
       }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
     }
   });
 
@@ -146,6 +125,10 @@ function renderCharts(data) {
       datasets: [{
         data: Object.values(categoryMap)
       }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
     }
   });
 
@@ -156,18 +139,20 @@ function renderCharts(data) {
       datasets: [{
         data: Object.values(statusMap)
       }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
     }
   });
 }
 
 function countBy(data, field) {
   const map = {};
-
   data.forEach(row => {
     const key = clean(row[field]) || "Sem informação";
     map[key] = (map[key] || 0) + 1;
   });
-
   return map;
 }
 
@@ -177,10 +162,6 @@ function normalize(value) {
 
 function clean(value) {
   return String(value || "").trim();
-}
-
-function setText(id, value) {
-  document.getElementById(id).textContent = value;
 }
 
 function escapeHtml(value) {
