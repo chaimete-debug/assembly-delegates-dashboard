@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard da Assembleia</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>27ª Assembleia Distrital</h1>
+      <p>Dashboard de Delegados e Presenças</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="cards">
+      <div class="card">
+        <h3>Total Registados</h3>
+        <p id="totalCount">0</p>
+      </div>
+      <div class="card">
+        <h3>Presentes</h3>
+        <p id="presentCount">0</p>
+      </div>
+      <div class="card">
+        <h3>Ausentes</h3>
+        <p id="absentCount">0</p>
+      </div>
+      <div class="card">
+        <h3>Delegados</h3>
+        <p id="delegateCount">0</p>
+      </div>
+      <div class="card">
+        <h3>Suplentes</h3>
+        <p id="suplenteCount">0</p>
+      </div>
+      <div class="card">
+        <h3>Substituições</h3>
+        <p id="substitutionCount">0</p>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel chart-panel">
+        <h2>Registos por Igreja</h2>
+        <div class="chart-wrap">
+          <canvas id="churchChart"></canvas>
+        </div>
+      </div>
+
+      <div class="panel chart-panel">
+        <h2>Registos por Categoria</h2>
+        <div class="chart-wrap">
+          <canvas id="categoryChart"></canvas>
+        </div>
+      </div>
+
+      <div class="panel chart-panel">
+        <h2>Situação dos Delegados</h2>
+        <div class="chart-wrap">
+          <canvas id="statusChart"></canvas>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Resumo por Igreja</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Igreja</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="churchSummaryBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel full">
+        <h2>Registos Recentes</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Igreja</th>
+                <th>Categoria</th>
+                <th>Situação</th>
+                <th>Substitui</th>
+              </tr>
+            </thead>
+            <tbody id="recentRecordsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel full">
+        <h2>Substituições</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome Final</th>
+                <th>Igreja</th>
+                <th>Categoria</th>
+                <th>Substitui</th>
+              </tr>
+            </thead>
+            <tbody id="substitutionsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const API_URL = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
