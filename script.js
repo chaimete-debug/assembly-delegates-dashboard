@@ -36,12 +36,31 @@ function renderKPIs(data) {
 
   const substitutions = data.filter(r => clean(r["Substitui (Nome)"]) !== "").length;
 
+  const presencePercent = TOTAL_DELEGADOS_OFICIAIS > 0
+    ? ((present / TOTAL_DELEGADOS_OFICIAIS) * 100).toFixed(1)
+    : "0.0";
+
+  const absencePercent = TOTAL_DELEGADOS_OFICIAIS > 0
+    ? (((TOTAL_DELEGADOS_OFICIAIS - present) / TOTAL_DELEGADOS_OFICIAIS) * 100).toFixed(1)
+    : "0.0";
+
+  const quorumRequired = Math.floor(TOTAL_DELEGADOS_OFICIAIS / 2) + 1;
+  const quorumReached = present >= quorumRequired;
+
   document.getElementById("totalCount").textContent = total;
   document.getElementById("presentCount").textContent = present;
   document.getElementById("absentCount").textContent = absent;
   document.getElementById("delegateCount").textContent = delegates;
   document.getElementById("suplenteCount").textContent = suplentes;
   document.getElementById("substitutionCount").textContent = substitutions;
+  document.getElementById("presencePercent").textContent = `${presencePercent}%`;
+  document.getElementById("absencePercent").textContent = `${absencePercent}%`;
+  document.getElementById("quorumRequired").textContent = quorumRequired;
+  document.getElementById("quorumStatus").textContent = quorumReached ? "Atingido" : "Não atingido";
+
+  const quorumCard = document.getElementById("quorumCard");
+  quorumCard.classList.remove("ok", "warn");
+  quorumCard.classList.add(quorumReached ? "ok" : "warn");
 }
 
 function renderChurchSummary(data) {
