@@ -11,6 +11,10 @@
   --topbar: #0f172a;
   --shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   --radius: 14px;
+  --ok-bg: #dcfce7;
+  --ok-text: #166534;
+  --warn-bg: #fee2e2;
+  --warn-text: #991b1b;
 }
 
 body {
@@ -42,7 +46,7 @@ body {
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   margin-bottom: 20px;
 }
@@ -65,6 +69,24 @@ body {
   margin: 0;
   font-size: 30px;
   font-weight: 700;
+}
+
+.quorum-card.ok {
+  background: var(--ok-bg);
+}
+
+.quorum-card.ok h3,
+.quorum-card.ok p {
+  color: var(--ok-text);
+}
+
+.quorum-card.warn {
+  background: var(--warn-bg);
+}
+
+.quorum-card.warn h3,
+.quorum-card.warn p {
+  color: var(--warn-text);
 }
 
 .grid {
@@ -113,7 +135,7 @@ th {
   color: var(--muted);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .cards {
     grid-template-columns: repeat(3, 1fr);
   }
