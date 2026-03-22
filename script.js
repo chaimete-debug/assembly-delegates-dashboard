@@ -17,7 +17,6 @@ async function loadDashboard() {
     renderKPIs(data);
     renderChurchSummary(data);
     renderRecentRecords(data);
-    renderSubstitutions(data);
     renderCharts(data);
 
   } catch (error) {
@@ -74,24 +73,6 @@ function renderRecentRecords(data) {
     `;
     tbody.appendChild(tr);
   });
-}
-
-function renderSubstitutions(data) {
-  const tbody = document.getElementById("substitutionsBody");
-  tbody.innerHTML = "";
-
-  data
-    .filter(r => clean(r["Substitui (Nome)"]) !== "")
-    .forEach(row => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${escapeHtml(clean(row["Nome Final"]))}</td>
-        <td>${escapeHtml(clean(row["Igreja Final"]))}</td>
-        <td>${escapeHtml(clean(row["Categoria Final"]))}</td>
-        <td>${escapeHtml(clean(row["Substitui (Nome)"]))}</td>
-      `;
-      tbody.appendChild(tr);
-    });
 }
 
 function renderCharts(data) {
