@@ -5,7 +5,16 @@ let statusChart;
 async function loadDashboard() {
   try {
     const response = await fetch(API_URL);
-    const json = await response.json();
+    const text = await response.text();
+
+    let json;
+    try {
+      json = JSON.parse(text);
+    } catch (e) {
+      alert("Erro de ligação: o API_URL não está a devolver JSON válido. Verifique o link do Apps Script publicado em /exec.");
+      console.error("Resposta recebida:", text);
+      return;
+    }
 
     if (!json.success) {
       alert("Erro ao carregar dados: " + (json.error || "Erro desconhecido"));
@@ -18,6 +27,7 @@ async function loadDashboard() {
     renderChurchSummary(data);
     renderRecentRecords(data);
     renderCharts(data);
+    initMobileTabs();
 
   } catch (error) {
     alert("Erro de ligação: " + error.message);
@@ -31,9 +41,7 @@ function renderKPIs(data) {
   const absent = data.filter(r => normalize(r["Situação Final"]) === "ausente").length;
 
   const delegates = data.filter(r => normalize(r["Categoria Final"]) === "delegado").length;
-
   const suplentes = data.filter(r => normalize(r["Categoria Final"]).includes("suplente")).length;
-
   const substitutions = data.filter(r => clean(r["Substitui (Nome)"]) !== "").length;
 
   const presencePercent = TOTAL_DELEGADOS_OFICIAIS > 0
@@ -144,6 +152,23 @@ function renderCharts(data) {
       responsive: true,
       maintainAspectRatio: false
     }
+  });
+}
+
+function initMobileTabs() {
+  const buttons = document.querySelectorAll(".tab-btn");
+  const sections = document.querySelectorAll(".tab-section");
+
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      const target = button.dataset.tab;
+
+      buttons.forEach(btn => btn.classList.remove("active"));
+      sections.forEach(section => section.classList.remove("active"));
+
+      button.classList.add("active");
+      document.getElementById(target).classList.add("active");
+    });
   });
 }
 
