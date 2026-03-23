@@ -38,8 +38,6 @@ function renderKPIs(data) {
   const total = data.length;
 
   const present = data.filter(r => normalize(r["Situação Final"]) === "presente").length;
-  const absent = data.filter(r => normalize(r["Situação Final"]) === "ausente").length;
-
   const delegates = data.filter(r => normalize(r["Categoria Final"]) === "delegado").length;
   const suplentes = data.filter(r => normalize(r["Categoria Final"]).includes("suplente")).length;
   const substitutions = data.filter(r => clean(r["Substitui (Nome)"]) !== "").length;
@@ -56,8 +54,6 @@ function renderKPIs(data) {
   const quorumReached = present >= quorumRequired;
 
   document.getElementById("totalCount").textContent = total;
-  document.getElementById("presentCount").textContent = present;
-  document.getElementById("absentCount").textContent = absent;
   document.getElementById("delegateCount").textContent = delegates;
   document.getElementById("suplenteCount").textContent = suplentes;
   document.getElementById("substitutionCount").textContent = substitutions;
