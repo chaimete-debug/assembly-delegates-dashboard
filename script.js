@@ -73,7 +73,7 @@ function renderChurchSummary(data) {
   tbody.innerHTML = "";
 
   Object.entries(map)
-    .sort((a, b) => b[1] - a[1])
+    .sort((a, b) => a[0].localeCompare(b[0], "pt", { sensitivity: "base" }))
     .forEach(([church, count]) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `<td>${escapeHtml(church)}</td><td>${count}</td>`;
@@ -85,7 +85,13 @@ function renderRecentRecords(data) {
   const tbody = document.getElementById("recentRecordsBody");
   tbody.innerHTML = "";
 
-  data.slice(-10).reverse().forEach(row => {
+  const sortedData = [...data].sort((a, b) => {
+    const nomeA = clean(a["Nome Final"]);
+    const nomeB = clean(b["Nome Final"]);
+    return nomeA.localeCompare(nomeB, "pt", { sensitivity: "base" });
+  });
+
+  sortedData.forEach(row => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${escapeHtml(clean(row["Nome Final"]))}</td>
