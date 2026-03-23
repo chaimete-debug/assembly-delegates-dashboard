@@ -59,65 +59,87 @@
       </div>
     </section>
 
-    <section class="grid">
-      <div class="panel chart-panel">
-        <h2>Registos por Igreja</h2>
-        <div class="chart-wrap">
-          <canvas id="churchChart"></canvas>
-        </div>
-      </div>
+    <section class="mobile-tabs">
+      <button class="tab-btn active" data-tab="chartsTab">Gráficos</button>
+      <button class="tab-btn" data-tab="summaryTab">Resumo</button>
+      <button class="tab-btn" data-tab="recordsTab">Registo</button>
+    </section>
 
-      <div class="panel chart-panel">
-        <h2>Registos por Categoria</h2>
-        <div class="chart-wrap">
-          <canvas id="categoryChart"></canvas>
+    <section class="tab-section active" id="chartsTab">
+      <section class="grid">
+        <div class="panel chart-panel">
+          <h2>Registos por Igreja</h2>
+          <div class="chart-scroll">
+            <div class="chart-wrap wide-chart">
+              <canvas id="churchChart"></canvas>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="panel chart-panel">
-        <h2>Situação dos Delegados</h2>
-        <div class="chart-wrap">
-          <canvas id="statusChart"></canvas>
+        <div class="panel chart-panel">
+          <h2>Registos por Categoria</h2>
+          <div class="chart-scroll">
+            <div class="chart-wrap">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="panel">
-        <h2>Resumo por Igreja</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Igreja</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody id="churchSummaryBody"></tbody>
-          </table>
+        <div class="panel chart-panel full">
+          <h2>Situação dos Delegados</h2>
+          <div class="chart-scroll">
+            <div class="chart-wrap">
+              <canvas id="statusChart"></canvas>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+    </section>
 
-      <div class="panel full">
-        <h2>Registo</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Igreja</th>
-                <th>Categoria</th>
-                <th>Situação</th>
-                <th>Substitui</th>
-              </tr>
-            </thead>
-            <tbody id="recentRecordsBody"></tbody>
-          </table>
+    <section class="tab-section" id="summaryTab">
+      <section class="grid single-grid">
+        <div class="panel full">
+          <h2>Resumo por Igreja</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Igreja</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="churchSummaryBody"></tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      </section>
+    </section>
+
+    <section class="tab-section" id="recordsTab">
+      <section class="grid single-grid">
+        <div class="panel full">
+          <h2>Registo</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Igreja</th>
+                  <th>Categoria</th>
+                  <th>Situação</th>
+                  <th>Substitui</th>
+                </tr>
+              </thead>
+              <tbody id="recentRecordsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </section>
   </main>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzMht1gmMFJfmA1lXexxXDbf8TNjHOBRd7QUiQmotTL3iPn0ORgMouwQH_r5J3Lj4cw/exec";
+    const API_URL = "COLE_AQUI_O_SEU_LINK_REAL_DO_APPS_SCRIPT";
     const TOTAL_DELEGADOS_OFICIAIS = 402;
   </script>
   <script src="script.js"></script>
