@@ -121,8 +121,12 @@ footer{
   <!-- KPI ROW 1 -->
   <div class="kpi-grid" style="margin-bottom:16px">
     <div class="kpi-card">
-      <div class="kpi-card-label">Total Registados</div>
+      <div class="kpi-card-label">Total de Delegados</div>
       <div class="kpi-card-value" id="k-total">—</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-card-label">Já Registados</div>
+      <div class="kpi-card-value" id="k-reg">—</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-card-label">Delegados</div>
@@ -131,10 +135,6 @@ footer{
     <div class="kpi-card">
       <div class="kpi-card-label">Suplentes</div>
       <div class="kpi-card-value" id="k-sup">—</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-card-label">Substituições</div>
-      <div class="kpi-card-value" id="k-subst">0</div>
     </div>
   </div>
 
@@ -193,43 +193,102 @@ footer{
 </div>
 
 <script>
-const D = {"total_igrejas":42,"total_efetivos":288,"total_suplentes":114,"total_delegados":402,"quorum":202,"church_stats":[{"igreja":"Matola Cidade","efetivos":13,"suplentes":11,"total":24},{"igreja":"Khongolote I","efetivos":13,"suplentes":9,"total":22},{"igreja":"Bairro da Matola","efetivos":13,"suplentes":8,"total":21},{"igreja":"Liberdade","efetivos":14,"suplentes":6,"total":20},{"igreja":"Fomento","efetivos":11,"suplentes":3,"total":14},{"igreja":"Infulene","efetivos":9,"suplentes":5,"total":14},{"igreja":"Ndlavela","efetivos":9,"suplentes":5,"total":14},{"igreja":"Machava Sede","efetivos":8,"suplentes":5,"total":13},{"igreja":"Matola A","efetivos":10,"suplentes":3,"total":13},{"igreja":"T3","efetivos":8,"suplentes":5,"total":13},{"igreja":"Massinwane","efetivos":8,"suplentes":3,"total":11},{"igreja":"Boquisso","efetivos":8,"suplentes":2,"total":10},{"igreja":"Ebenezer Nkobe","efetivos":5,"suplentes":5,"total":10},{"igreja":"Khongolote II","efetivos":8,"suplentes":2,"total":10},{"igreja":"Moamba","efetivos":7,"suplentes":3,"total":10},{"igreja":"Tchumene","efetivos":8,"suplentes":2,"total":10},{"igreja":"Tsalala","efetivos":8,"suplentes":2,"total":10},{"igreja":"Djuba","efetivos":6,"suplentes":3,"total":9},{"igreja":"Intaka","efetivos":6,"suplentes":3,"total":9},{"igreja":"KM 15","efetivos":6,"suplentes":3,"total":9},{"igreja":"Malhampsene","efetivos":9,"suplentes":0,"total":9},{"igreja":"Mutatel","efetivos":6,"suplentes":2,"total":8},{"igreja":"Ndlavela I","efetivos":6,"suplentes":2,"total":8},{"igreja":"Nwamatibyana","efetivos":6,"suplentes":2,"total":8},{"igreja":"Likwakwanine","efetivos":5,"suplentes":2,"total":7},{"igreja":"Makhelene","efetivos":5,"suplentes":2,"total":7},{"igreja":"Malhampsene II","efetivos":5,"suplentes":2,"total":7},{"igreja":"Matola Gare","efetivos":5,"suplentes":2,"total":7},{"igreja":"Matola Rio B","efetivos":6,"suplentes":1,"total":7},{"igreja":"Muhalaze","efetivos":5,"suplentes":2,"total":7},{"igreja":"Mussumbuluko","efetivos":5,"suplentes":2,"total":7},{"igreja":"Xinyempfana","efetivos":5,"suplentes":2,"total":7},{"igreja":"Mulotana Bill","efetivos":5,"suplentes":1,"total":6},{"igreja":"Vale de Infulene","efetivos":5,"suplentes":1,"total":6},{"igreja":"Beluluane","efetivos":4,"suplentes":1,"total":5},{"igreja":"Mulotana","efetivos":5,"suplentes":0,"total":5},{"igreja":"Ressano Garcia","efetivos":4,"suplentes":1,"total":5},{"igreja":"Sabie","efetivos":5,"suplentes":0,"total":5},{"igreja":"Tenga","efetivos":4,"suplentes":1,"total":5},{"igreja":"Makopene","efetivos":4,"suplentes":0,"total":4},{"igreja":"Tchonissa","efetivos":4,"suplentes":0,"total":4},{"igreja":"Distrito da Matola","efetivos":2,"suplentes":0,"total":2}]};
+const D = {
+  "total_igrejas": 42,
+  "total_efetivos": 288,
+  "total_suplentes": 114,
+  "total_delegados": 402,
+  "total_registados": 8,
+  "quorum": 202,
+  "church_stats": [
+    {"igreja":"Matola Cidade","efetivos":13,"suplentes":11,"total":24},
+    {"igreja":"Khongolote I","efetivos":13,"suplentes":9,"total":22},
+    {"igreja":"Bairro da Matola","efetivos":13,"suplentes":8,"total":21},
+    {"igreja":"Liberdade","efetivos":14,"suplentes":6,"total":20},
+    {"igreja":"Fomento","efetivos":11,"suplentes":3,"total":14},
+    {"igreja":"Infulene","efetivos":9,"suplentes":5,"total":14},
+    {"igreja":"Ndlavela","efetivos":9,"suplentes":5,"total":14},
+    {"igreja":"Machava Sede","efetivos":8,"suplentes":5,"total":13},
+    {"igreja":"Matola A","efetivos":10,"suplentes":3,"total":13},
+    {"igreja":"T3","efetivos":8,"suplentes":5,"total":13},
+    {"igreja":"Massinwane","efetivos":8,"suplentes":3,"total":11},
+    {"igreja":"Boquisso","efetivos":8,"suplentes":2,"total":10},
+    {"igreja":"Ebenezer Nkobe","efetivos":5,"suplentes":5,"total":10},
+    {"igreja":"Khongolote II","efetivos":8,"suplentes":2,"total":10},
+    {"igreja":"Moamba","efetivos":7,"suplentes":3,"total":10},
+    {"igreja":"Tchumene","efetivos":8,"suplentes":2,"total":10},
+    {"igreja":"Tsalala","efetivos":8,"suplentes":2,"total":10},
+    {"igreja":"Djuba","efetivos":6,"suplentes":3,"total":9},
+    {"igreja":"Intaka","efetivos":6,"suplentes":3,"total":9},
+    {"igreja":"KM 15","efetivos":6,"suplentes":3,"total":9},
+    {"igreja":"Malhampsene","efetivos":9,"suplentes":0,"total":9},
+    {"igreja":"Mutatel","efetivos":6,"suplentes":2,"total":8},
+    {"igreja":"Ndlavela I","efetivos":6,"suplentes":2,"total":8},
+    {"igreja":"Nwamatibyana","efetivos":6,"suplentes":2,"total":8},
+    {"igreja":"Likwakwanine","efetivos":5,"suplentes":2,"total":7},
+    {"igreja":"Makhelene","efetivos":5,"suplentes":2,"total":7},
+    {"igreja":"Malhampsene II","efetivos":5,"suplentes":2,"total":7},
+    {"igreja":"Matola Gare","efetivos":5,"suplentes":2,"total":7},
+    {"igreja":"Matola Rio B","efetivos":6,"suplentes":1,"total":7},
+    {"igreja":"Muhalaze","efetivos":5,"suplentes":2,"total":7},
+    {"igreja":"Mussumbuluko","efetivos":5,"suplentes":2,"total":7},
+    {"igreja":"Xinyempfana","efetivos":5,"suplentes":2,"total":7},
+    {"igreja":"Mulotana Bill","efetivos":5,"suplentes":1,"total":6},
+    {"igreja":"Vale de Infulene","efetivos":5,"suplentes":1,"total":6},
+    {"igreja":"Beluluane","efetivos":4,"suplentes":1,"total":5},
+    {"igreja":"Mulotana","efetivos":5,"suplentes":0,"total":5},
+    {"igreja":"Ressano Garcia","efetivos":4,"suplentes":1,"total":5},
+    {"igreja":"Sabie","efetivos":5,"suplentes":0,"total":5},
+    {"igreja":"Tenga","efetivos":4,"suplentes":1,"total":5},
+    {"igreja":"Makopene","efetivos":4,"suplentes":0,"total":4},
+    {"igreja":"Tchonissa","efetivos":4,"suplentes":0,"total":4},
+    {"igreja":"Distrito da Matola","efetivos":2,"suplentes":0,"total":2}
+  ]
+};
 
-const TOTAL=D.total_delegados, QUORUM=D.quorum, EF=D.total_efetivos, SUP=D.total_suplentes;
+const TOTAL  = Number(D.total_delegados || 0);
+const REG    = Number(D.total_registados || 0);
+const QUORUM = Number(D.quorum || 0);
+const EF     = Number(D.total_efetivos || 0);
+const SUP    = Number(D.total_suplentes || 0);
+
+const presPct = TOTAL > 0 ? ((REG / TOTAL) * 100) : 0;
+const ausPct  = TOTAL > 0 ? (100 - presPct) : 0;
 
 // KPIs
-document.getElementById('k-total').textContent = TOTAL;
-document.getElementById('k-ef').textContent    = EF;
-document.getElementById('k-sup').textContent   = SUP;
-document.getElementById('k-pres').textContent  = '100.0%';
-document.getElementById('k-aus').textContent   = '0.0%';
-document.getElementById('k-quorum').textContent= QUORUM;
+document.getElementById('k-total').textContent  = TOTAL;
+document.getElementById('k-reg').textContent    = REG;
+document.getElementById('k-ef').textContent     = EF;
+document.getElementById('k-sup').textContent    = SUP;
+document.getElementById('k-pres').textContent   = presPct.toFixed(1) + '%';
+document.getElementById('k-aus').textContent    = ausPct.toFixed(1) + '%';
+document.getElementById('k-quorum').textContent = QUORUM;
 
-const reached = TOTAL >= QUORUM;
+const reached = REG >= QUORUM;
 const ec = document.getElementById('k-estado-card');
 const el = document.getElementById('k-estado-label');
 const ev = document.getElementById('k-estado-val');
+
 if(reached){
   ec.classList.add('estado-ok');
-  el.textContent='Estado do Quórum'; ev.textContent='Atingido';
+  el.textContent = 'Estado do Quórum';
+  ev.textContent = 'Atingido';
 }else{
   ec.classList.add('estado-card');
-  el.textContent='Estado do Quórum'; ev.textContent='Não atingido';
+  el.textContent = 'Estado do Quórum';
+  ev.textContent = 'Não atingido';
 }
 
-// Paleta que combina com o azul-marinho do header
-const BLUE   = '#4299e1'; // azul claro — Efetivos/Delegados
-const TEAL   = '#38b2ac'; // teal — Suplentes
-const ORANGE = '#ed8936'; // laranja — JNI
-const GOLD   = '#ecc94b'; // amarelo/dourado — DNI
-const PINK   = '#ed64a6'; // rosa — MNI
-const GRAY   = '#a0aec0';
+// Paleta
+const BLUE = '#4299e1';
+const TEAL = '#38b2ac';
 
 Chart.defaults.font.family = "'Inter',sans-serif";
 Chart.defaults.color = '#718096';
 
-// ── Gráfico de barras: Delegados por Igreja (vertical, barras empilhadas, top 15)
+// ── Gráfico de barras: Delegados por Igreja
 const top15 = D.church_stats.slice(0,15);
+
 new Chart(document.getElementById('churchBarChart'),{
   type:'bar',
   data:{
@@ -250,13 +309,18 @@ new Chart(document.getElementById('churchBarChart'),{
     ]
   },
   options:{
-    responsive:true,maintainAspectRatio:false,
+    responsive:true,
+    maintainAspectRatio:false,
     plugins:{
       legend:{
         position:'top',
         labels:{usePointStyle:true,pointStyleWidth:9,padding:16}
       },
-      tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y}`}}
+      tooltip:{
+        callbacks:{
+          label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y}`
+        }
+      }
     },
     scales:{
       x:{
@@ -276,10 +340,12 @@ new Chart(document.getElementById('churchBarChart'),{
 // ── Tabela
 const tbody = document.getElementById('tableBody');
 D.church_stats.forEach((c,i)=>{
-  const pct = (c.total/TOTAL*100).toFixed(1);
-  const fillW = (c.total/D.church_stats[0].total*100).toFixed(1);
+  const pct = TOTAL > 0 ? (c.total / TOTAL * 100).toFixed(1) : '0.0';
+  const maxTotal = D.church_stats.length ? D.church_stats[0].total : 1;
+  const fillW = maxTotal > 0 ? (c.total / maxTotal * 100).toFixed(1) : '0.0';
+
   const tr = document.createElement('tr');
-  tr.innerHTML=`
+  tr.innerHTML = `
     <td class="num" style="color:#a0aec0;width:36px">${i+1}</td>
     <td style="font-weight:500">${c.igreja}</td>
     <td class="num" style="color:${BLUE};font-weight:600">${c.efetivos}</td>
@@ -288,7 +354,8 @@ D.church_stats.forEach((c,i)=>{
     <td class="bar-cell">
       <div class="pct-text">${pct}%</div>
       <div class="mini-bar"><div class="mini-fill-blue" style="width:${fillW}%"></div></div>
-    </td>`;
+    </td>
+  `;
   tbody.appendChild(tr);
 });
 </script>
