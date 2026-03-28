@@ -36,11 +36,14 @@ body{
 }
 .kpi-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:16px;
   margin-bottom:16px;
 }
-@media(max-width:900px){
+@media(max-width:1100px){
+  .kpi-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:700px){
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:560px){
@@ -218,6 +221,10 @@ footer{
 
   <div class="kpi-grid" style="margin-bottom:16px">
     <div class="kpi-card">
+      <div class="kpi-card-label">Total de Delegados</div>
+      <div class="kpi-card-value" id="k-total-delegados">—</div>
+    </div>
+    <div class="kpi-card">
       <div class="kpi-card-label">Já Registados</div>
       <div class="kpi-card-value" id="k-total">—</div>
     </div>
@@ -272,7 +279,7 @@ footer{
             <th class="num">Delegados</th>
             <th class="num">Suplentes</th>
             <th class="num">Total</th>
-            <th>% do Total</th>
+            <th>% do Total Registado</th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -288,7 +295,7 @@ footer{
 
 <script>
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbxElcCSteFq2PY1EeDysdb0R5ZPWlBZce-2r-Rq2jvZij3PaeFWOsLeW1UTO52Sj_GoKw/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbwnumd8u7LQoIm5i-qseRr_sDDdMiT7JX551Kw_jezgNEe2oyc5AbD81r24smGQXaC6nQ/exec',
   TOTAL_DELEGADOS_OFICIAL: 402,
   QUORUM_MINIMO: 202,
   AUTO_REFRESH_MS: 30000
@@ -334,7 +341,8 @@ function setStatus(kind, text){
 }
 
 function setText(id, value){
-  document.getElementById(id).textContent = value;
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
 }
 
 function getFirst(obj, keys){
@@ -349,7 +357,12 @@ function getFirst(obj, keys){
 function getChurchName(row){
   return norm(
     getFirst(row, [
-      'igreja','nome_igreja','igreja_label','church','church_name','local_igreja'
+      'igreja',
+      'nome_igreja',
+      'igreja_label',
+      'church',
+      'church_name',
+      'local_igreja'
     ])
   ) || 'Sem Igreja';
 }
@@ -357,7 +370,13 @@ function getChurchName(row){
 function getRoleRaw(row){
   return slug(
     getFirst(row, [
-      'categoria','tipo','cargo','qualidade','situacao','tipo_registo','perfil'
+      'categoria',
+      'tipo',
+      'cargo',
+      'qualidade',
+      'situacao',
+      'tipo_registo',
+      'perfil'
     ])
   );
 }
@@ -430,11 +449,11 @@ function buildMetrics(rows, summary = {}){
       totalSubst++;
       item.efetivos++;
       item.total++;
-    }else if(kind === 'sup'){
+    } else if(kind === 'sup'){
       totalSup++;
       item.suplentes++;
       item.total++;
-    }else{
+    } else {
       totalEf++;
       item.efetivos++;
       item.total++;
@@ -461,6 +480,7 @@ function buildMetrics(rows, summary = {}){
 }
 
 function renderKPIs(m){
+  setText('k-total-delegados', m.totalDelegadosOficial);
   setText('k-total', m.totalReg);
   setText('k-ef', m.totalEf);
   setText('k-sup', m.totalSup);
@@ -478,7 +498,7 @@ function renderKPIs(m){
   if(reached){
     card.classList.add('estado-ok');
     val.textContent = 'Atingido';
-  }else{
+  } else {
     card.classList.add('estado-card');
     val.textContent = 'Não atingido';
   }
